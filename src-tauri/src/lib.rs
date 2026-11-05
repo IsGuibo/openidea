@@ -24,6 +24,7 @@ mod titlebar;
 mod window_groups;
 #[cfg(any(windows, test))]
 mod window_work_area;
+mod window_zoom;
 mod windows;
 
 use parking_lot::Mutex;
@@ -177,6 +178,7 @@ pub fn run() {
         }
         tauri::WindowEvent::Focused(false) => application_focus::changed(window.app_handle(), false),
         tauri::WindowEvent::Destroyed => {
+            window_zoom::forget(window.label());
             #[cfg(target_os = "macos")]
             {
                 titlebar::forget(window);
